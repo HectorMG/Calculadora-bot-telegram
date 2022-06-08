@@ -48,16 +48,9 @@ def on_add(message):
     bot.send_chat_action(message.chat.id, 'typing')
     sleep(1)
     
-    parts = re.match(
-        r"^sumar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
-        message.text,
-        flags=re.IGNORECASE)
+    operadores = split_elements("sumar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",message.text)
     
-    # print (parts.groups())
-    oper1 = float(parts[1])
-    oper2 = float(parts[3])
-    
-    result = oper1 + oper2
+    result = operadores[0] + operadores[1]
     
     bot.reply_to(
         message,
@@ -70,16 +63,9 @@ def on_subtract(message):
     bot.send_chat_action(message.chat.id, 'typing')
     sleep(1)
     
-    parts = re.match(
-        r"^restar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
-        message.text,
-        flags=re.IGNORECASE)
+    operadores = split_elements("restar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",message.text)
     
-    # print (parts.groups())
-    oper1 = float(parts[1])
-    oper2 = float(parts[3])
-    
-    result = oper1 - oper2
+    result = operadores[0] - operadores[1]
     
     bot.reply_to(
         message,
@@ -92,16 +78,9 @@ def on_multiply(message):
     bot.send_chat_action(message.chat.id, 'typing')
     sleep(1)
     
-    parts = re.match(
-        r"^multiplicar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
-        message.text,
-        flags=re.IGNORECASE)
+    operadores = split_elements("multiplicar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",message.text)
     
-    # print (parts.groups())
-    oper1 = float(parts[1])
-    oper2 = float(parts[3])
-    
-    result = oper1 * oper2
+    result = operadores[0] * operadores[1]
     
     bot.reply_to(
         message,
@@ -115,21 +94,14 @@ def on_divide(message):
     bot.send_chat_action(message.chat.id, 'typing')
     sleep(1)
     
-    parts = re.match(
-        r"^dividir ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
-        message.text,
-        flags=re.IGNORECASE)
+    operadores = split_elements("dividir ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",message.text)
     
-    # print (parts.groups())
-    oper1 = float(parts[1])
-    oper2 = float(parts[3])
-    
-    if oper2==0:
+    if operadores[1]==0:
         bot.reply_to(
             message,
             f"\U0001F628 Lo sentimos, no se puede dividir entre cero.")
         
-    result = oper1 / oper2
+    result = operadores[0] / operadores[1]
     
     bot.reply_to(
         message,
@@ -147,6 +119,20 @@ def on_fallback(message):
     bot.reply_to(
         message,
         "\U0001F648 Ups, no entendí lo que me dijiste.")
+
+
+def split_elements(expresion, text):
+        parts = re.match(
+            expresion,
+            text,
+            flags=re.IGNORECASE)
+    
+        operadores = []
+        operadores.append(float(parts[1]))
+        operadores.append(float(parts[3]))
+        
+        return operadores
+        
 
 #########################################################
 
