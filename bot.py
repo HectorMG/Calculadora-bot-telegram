@@ -59,6 +59,30 @@ def on_subtract(message):
         message,
         f"\U0001F913 Resultado: {result}")
 #########################################################
+
+# Función para Multiplicar 
+@bot.message_handler(regexp=r"^multiplicar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$")
+def on_multiply(message):
+    bot.send_chat_action(message.chat.id, 'typing')
+    sleep(1)
+    
+    parts = re.match(
+        r"^multiplicar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
+        message.text,
+        flags=re.IGNORECASE)
+    
+    # print (parts.groups())
+    oper1 = float(parts[1])
+    oper2 = float(parts[3])
+    
+    result = oper1 * oper2
+    
+    bot.reply_to(
+        message,
+        f"\U0001F913 Resultado: {result}")
+
+
+#########################################################
 if __name__ == '__main__':
     bot.polling(timeout=20)
 #########################################################
