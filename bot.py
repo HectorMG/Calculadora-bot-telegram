@@ -4,8 +4,8 @@ import config
 from time import sleep
 import re
 #########################################################
-# Aquí vendrá la implementación de la lógica del bot
 
+#Función para resolver comando /start
 @bot.message_handler(commands=['start'])
 def on_command_start(message):
     bot.send_chat_action(message.chat.id, 'typing')
@@ -14,8 +14,9 @@ def on_command_start(message):
         message.chat.id,
         "Hola, soy un \U0001F916, ¿cómo estás?",
         parse_mode="Markdown")
+#########################################################
 
-
+# Función para Sumar
 @bot.message_handler(regexp=r"^sumar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$")
 def on_add(message):
     bot.send_chat_action(message.chat.id, 'typing')
@@ -32,10 +33,31 @@ def on_add(message):
     
     result = oper1 + oper2
     
-    bot.send_message(
-        message.chat.id,
+    bot.reply_to(
+        message,
         f"\U0001F913 Resultado: {result}")
+#########################################################
 
+# Función para Restar
+@bot.message_handler(regexp=r"^restar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$")
+def on_subtract(message):
+    bot.send_chat_action(message.chat.id, 'typing')
+    sleep(1)
+    
+    parts = re.match(
+        r"^restar ([+-]?([0-9]*[.])?[0-9]+) y ([+-]?([0-9]*[.])?[0-9]+)$",
+        message.text,
+        flags=re.IGNORECASE)
+    
+    # print (parts.groups())
+    oper1 = float(parts[1])
+    oper2 = float(parts[3])
+    
+    result = oper1 - oper2
+    
+    bot.reply_to(
+        message,
+        f"\U0001F913 Resultado: {result}")
 #########################################################
 if __name__ == '__main__':
     bot.polling(timeout=20)
